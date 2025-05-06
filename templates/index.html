@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Register Student</h2>
+        <form id="studentForm">
+            <input type="text" id="name" placeholder="Enter Name" required>
+            <input type="text" id="usn" placeholder="Enter USN" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const usn = document.getElementById('usn').value;
+
+            fetch('/submit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `name=${name}&usn=${usn}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Submitted: ${data.name}, ${data.usn}`;
+            });
+        });
+    </script>
+</body>
+</html>
